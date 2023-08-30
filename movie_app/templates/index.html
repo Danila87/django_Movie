@@ -1,0 +1,37 @@
+{% extends 'main_base.html' %}
+
+
+{% block title %}
+	Главная страница
+{% endblock %}
+
+{% block content %}
+
+    <div class='col-6 text-center mx-auto mt-5'>
+
+        <h3>Добро пожаловать</h3>
+        <h5>Выберите раздел сайта чтобы продолжить</h5>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="{% url 'all_movies' %}" class='btn btn-outline-primary'>Фильмы</a>
+            <a href="#" class='btn btn-outline-primary'>Новости</a>
+
+              {% if user.is_authenticated %}
+
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Аккаунт</button>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Профиль</a></li>
+                    <li><a class="dropdown-item" href="#">Настройки</a></li>
+                    <li><a class="dropdown-item" href="#">Выход</a></li>
+                    </ul>
+
+              {% else %}
+
+            <a href="#" class='btn btn-outline-primary'>Вход</a>
+            <a href="#" class='btn btn-outline-primary'>Регистрация</a>
+
+              {% endif %}
+            </div>
+    </div>
+
+{% endblock %}
+
