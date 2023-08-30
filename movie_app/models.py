@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -100,6 +101,20 @@ class Movie(models.Model):
     rating_mpaa = models.CharField(max_length=4, choices=RATING_MPAA)
 
     rewards = models.ManyToManyField(Reward)
+
+    class Meta:
+        ordering = ['-id']
+
+    def get_url(self):
+        return reverse('about_movie', args=[self.slug])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Movie, self).save(*args, **kwargs)
+
+    @property
+    def all_reviews(self):
+        return self.review_set.all()
 
 
 class Review(models.Model):
