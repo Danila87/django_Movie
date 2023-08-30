@@ -8,14 +8,17 @@ from django.utils.text import slugify
 
 
 class Country(models.Model):
+
     name = models.CharField(max_length=30)
 
 
 class Genre(models.Model):
+
     name = models.CharField(max_length=30)
 
 
 class TypePerson(models.Model):
+
     name = models.CharField(max_length=30)
 
 
@@ -38,7 +41,7 @@ class Person(models.Model):
     img = models.ImageField(upload_to='person_photo/%Y/%m/%d')
     slug = models.SlugField(default='')
 
-    genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
+    genre = models.ManyToManyField(Genre)
     type_person = models.ManyToManyField(TypePerson)
 
     def get_url(self):
@@ -59,9 +62,22 @@ class Person(models.Model):
 
 
 class Reward(models.Model):
+
     name = models.CharField(max_length=30)
     description = models.TextField(null=True, blank=True)
     img = models.ImageField(upload_to='rewards_photo/%Y/%m/%d', null=True, blank=True)
+    slug = models.SlugField()
+
+    def get_url(self):
+        return reverse('about_reward', args=[self.slug])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Reward, self).save(*args, **kwargs)
+
+    @property
+    def all_film(self):
+        return self.movie_set.all()
 
 
 class Movie(models.Model):
@@ -122,6 +138,7 @@ class Movie(models.Model):
 
 
 class Review(models.Model):
+
     user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default='Пользователь удален')
     text_review = models.TextField()
     date_review = models.DateField()
