@@ -44,6 +44,10 @@ class Person(models.Model):
     def get_url(self):
         return reverse('about_person', args=[self.slug])
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Person, self).save(*args, **kwargs)
+
     @property
     def all_films(self):
         return self.movie_set.all()
