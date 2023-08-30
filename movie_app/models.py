@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+from datetime import date
 
 # Create your models here.
 
@@ -37,6 +39,18 @@ class Person(models.Model):
 
     genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
     type_person = models.ManyToManyField(TypePerson)
+
+    def get_url(self):
+        return reverse('about_person', args=[self.slug])
+
+    @property
+    def all_films(self):
+        return self.movie_set.all()
+
+    @property
+    def age(self):
+        now_year = date.today().year
+        return now_year - self.date_born.year
 
 
 class Reward(models.Model):
