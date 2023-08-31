@@ -17,19 +17,22 @@
 
               {% if user.is_authenticated %}
 
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Аккаунт</button>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Аккаунт</button>
                     <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Профиль</a></li>
-                    <li><a class="dropdown-item" href="#">Настройки</a></li>
-                    <li><a class="dropdown-item" href="#">Выход</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user_profile' %}">Профиль</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user_settings' %}">Настройки</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
                     </ul>
+                </div>
 
               {% else %}
 
-            <a href="#" class='btn btn-outline-primary'>Вход</a>
-            <a href="#" class='btn btn-outline-primary'>Регистрация</a>
+            <a href="{% url 'login' %}" class='btn btn-outline-primary'>Вход</a>
+            <a href="{% url 'registration' %}" class='btn btn-outline-primary'>Регистрация</a>
 
               {% endif %}
+
             </div>
     </div>
 

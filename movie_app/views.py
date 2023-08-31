@@ -33,3 +33,21 @@ class AboutMovie(DetailView):
 class AboutPerson(DetailView):
     pass
 
+
+class LoginUser:
+    pass
+
+
+class RegisterUser:
+    pass
+
+class UserProfile:
+    pass
+
+
+class UserProfileSettings:
+    pass
+
+
+def user_logout(request):
+    return None
