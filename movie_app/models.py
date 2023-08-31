@@ -11,15 +11,24 @@ class Country(models.Model):
 
     name = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
+
 
 class Genre(models.Model):
 
     name = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
+
 
 class TypePerson(models.Model):
 
     name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
 
 
 class Person(models.Model):
@@ -44,6 +53,9 @@ class Person(models.Model):
     genre = models.ManyToManyField(Genre)
     type_person = models.ManyToManyField(TypePerson)
 
+    def __str__(self):
+        return self.name
+
     def get_url(self):
         return reverse('about_person', args=[self.slug])
 
@@ -67,6 +79,9 @@ class Reward(models.Model):
     description = models.TextField(null=True, blank=True)
     img = models.ImageField(upload_to='rewards_photo/%Y/%m/%d', null=True, blank=True)
     slug = models.SlugField()
+
+    def __str__(self):
+        return self.name
 
     def get_url(self):
         return reverse('about_reward', args=[self.slug])
@@ -120,7 +135,10 @@ class Movie(models.Model):
 
     rating_mpaa = models.CharField(max_length=4, choices=RATING_MPAA)
 
-    rewards = models.ManyToManyField(Reward)
+    rewards = models.ManyToManyField(Reward, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ['-id']
