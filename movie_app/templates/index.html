@@ -9,8 +9,8 @@
 
     <div class='col-6 text-center mx-auto mt-5'>
 
-        <h3>Добро пожаловать</h3>
-        <h5>Выберите раздел сайта чтобы продолжить</h5>
+        <h3>Добро пожаловать {{ user.username }}</h3>
+        <h5>Выберите раздел сайта, чтобы продолжить</h5>
           <div class="d-grid gap-2 col-6 mx-auto">
             <a href="{% url 'all_movies' %}" class='btn btn-outline-primary'>Фильмы</a>
             <a href="#" class='btn btn-outline-primary'>Новости</a>
