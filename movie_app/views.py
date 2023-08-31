@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -36,8 +37,18 @@ class AboutPerson(DetailView):
     pass
 
 
-class LoginUser(DetailView):
-    pass
+class LoginUser(LoginView):
+
+    template_name = 'account/login.html'
+    form_class = forms.AuthenticationUserForm
+
+    def get_success_url(self):
+        return reverse_lazy('main')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['width'] = '4'
+        return context
 
 
 class RegisterUser(CreateView):

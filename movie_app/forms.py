@@ -35,3 +35,15 @@ class FormRegisterUser(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
+
+class AuthenticationUserForm(AuthenticationForm):
+
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Danila87'
+    }))
+
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': '*************'
+    }))
