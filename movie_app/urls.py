@@ -9,11 +9,11 @@ urlpatterns = [
 
     path('account/', include([
 
-        path('account/login', views.LoginUser.as_view(), name='login'),
-        path('account/registration', views.RegisterUser.as_view(), name='registration'),
-        path('account/logout', views.user_logout, name='logout'),
-        path('account/profile', views.UserProfile.as_view(), name='user_profile'),
-        path('account/profile_settings', views.UserProfileSettings.as_view(), name='user_settings')
+        path('login', views.LoginUser.as_view(), name='login'),
+        path('registration', views.RegisterUser.as_view(), name='registration'),
+        path('logout', views.user_logout, name='logout'),
+        path('profile', views.UserProfile.as_view(), name='user_profile'),
+        path('profile_settings', views.UserProfileSettings.as_view(), name='user_settings')
 
     ])),
 

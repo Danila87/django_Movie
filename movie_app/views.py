@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -77,4 +77,5 @@ class UserProfileSettings(DetailView):
 
 
 def user_logout(request):
-    pass
+    logout(request)
+    return redirect('main')
