@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from datetime import date
 from django.utils.text import slugify
-
+from .service import transliteration
 # Create your models here.
 
 
@@ -112,13 +112,13 @@ class Movie(models.Model):
     ]
 
     name = models.CharField(max_length=50)
-    tagline = models.CharField(max_length=200)
+    tagline = models.CharField(max_length=200, default='-')
     description = models.TextField(null=True)
 
     img = models.ImageField(upload_to='movie_photos/%Y/%m/%d', null=True, blank=True)
     video = models.FileField(upload_to='movie_video/%Y/%m/%d', null=True, blank=True)
 
-    slug = models.SlugField()
+    slug = models.SlugField(null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
 
     genre = models.ManyToManyField(Genre)
@@ -147,7 +147,7 @@ class Movie(models.Model):
         return reverse('about_movie', args=[self.slug])
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(transliteration(self.name))
         super(Movie, self).save(*args, **kwargs)
 
     @property

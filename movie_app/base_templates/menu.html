@@ -26,10 +26,10 @@
                         Профиль
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'profile' request.user.pk %}">Личный кабинет</a></li>
-                        <li><a class="dropdown-item" href="#">Настройки</a></li>
+                        <li><a class="dropdown-item" href="#">Личный кабинет</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_settings' %}">Настройки</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href={% url 'logout_user' %}>Выход</a></li>
+                        <li><a class="dropdown-item" href={% url 'logout' %}>Выход</a></li>
                       </ul>
                     </li>
                 </ul>

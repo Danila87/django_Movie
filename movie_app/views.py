@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from . import forms
+from . import models
 # Create your views here.
 
 
@@ -14,7 +15,25 @@ def main_view(request):
 
 
 class AllMovies(ListView):
-    pass
+
+    model = models.Movie
+    template_name = 'all_movie.html'
+    context_object_name = 'movies'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['countries'] = models.Country.objects.all()
+        context['genres'] = models.Genre.objects.all()
+        context['ratings_mpaa'] = self.model.RATING_MPAA
+        return context
+
+    def get_queryset(self):
+        if self.request.GET:
+            order_field = self.request.GET['filter']
+            return models.Movie.objects.all().order_by(order_field)
+        else:
+            return models.Movie.objects.all()
+
 
 
 class AllRewards(ListView):
