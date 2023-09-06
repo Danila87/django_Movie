@@ -7,16 +7,34 @@
     {% for movie in movies %}
 
         <div class="col">
-          <div class="card h-80">
-            <img src='{{ movie.img.url }}' class="card-img-top" alt="...">
-            <div class="card-body">
-              <h4 class="card-title">{{ movie.name}} </h4>
+          <div class="card h-80 shadow-sm">
+              <div class="card-header text-end">
                   <h5>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
                         <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                       </svg>
                       {{ movie.world_rating }}
                   </h5>
+              </div>
+            <img src='{{ movie.img.url }}' class="card-img-top" alt="...">
+            <div class="card-body">
+              <h4 class="card-title">{{ movie.name}} </h4>
+            <p>
+               {% for genre in movie.genre.all %}
+
+                   {% if forloop.last %}
+
+                       {{ genre }}
+
+                       {% else %}
+
+                       {{ genre }},
+
+                   {% endif %}
+
+                   {% endfor %}
+            </p>
+                <hr>
               <p class="card-text">{{ movie.description|truncatechars:200 }}</p>
                 <a href="{{ movie.get_url }}" class="btn btn-primary">Подробнее</a>
             </div>
@@ -34,7 +52,7 @@
             Сортировать по:
           </a>
           <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="?filter=-name">Название</a></li>
+                <li><a class="dropdown-item" href="?filter=name">Название</a></li>
                 <li><a class="dropdown-item" href="?filter=-data_release">Год выхода</a></li>
                 <li><a class="dropdown-item" href="?filter=-world_rating">Рейтинг</a></li>
                 <li><a class="dropdown-item" href="?filter=rating_mpaa">Рейтинг MPAA</a></li>
@@ -46,122 +64,123 @@
 
 {% block filter %}
 
-      <div class='card'>
-		<div class='card-header text-center'>
-			<h5 data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter">Фильтр</h5>
-		</div>
-			<div class='collapse' id='filter'>
-				<div class=card-body>
+    <form action="{% url 'all_movie_filter' %}" method="GET">
 
-					<p data-bs-toggle="collapse" href="#country" role="button" aria-expanded="false" aria-controls="country">
-				Страна
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-  <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-</svg>
-			</p>
-
-			<div class="collapse" id="country">
-				<div class='card'>
-					<div class='card-body' data-bs-spy="scroll" style='height: 200px; overflow-y: auto'>
-
-						<input class="form-control mb-2" type="search" placeholder="Поиск" aria-label="Поиск">
-
-                        {% for country in countries %}
-
-                            <input class="form-check-input" type="checkbox" value="{{ country }}" id="{{ country }}">
-					        <label class="form-check-label" for="{{ country }}">
-						    {{ country }}
-					        </label>
-						    <br>
-
-                        {% endfor %}
-
-					</div>
-				</div>
-			</div>
-
-			<p data-bs-toggle="collapse" href="#genre" role="button" aria-expanded="false" aria-controls="genre">
-				Жанр
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-  <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-</svg>
-			</p>
-
-			<div class="collapse" id="genre">
-				<div class='card'>
-					<div class='card-body' style='height: 200px; overflow-y: auto' data-bs-spy="scroll">
-
-						<input class="form-control mb-2" type="search" placeholder="Поиск" aria-label="Поиск">
-
-                        {% for genre in genres %}
-
-                            <input class="form-check-input" type="checkbox" value="{{ genre }}" id="flexCheckChecked">
-					        <label class="form-check-label" for="{{ genre }}">
-                                {{ genre }}
-					        </label>
-						    <br>
-
-                        {% endfor %}
-                    
-					</div>
-				</div>
-			</div>
-
-			<p data-bs-toggle="collapse" href="#genre" role="button" aria-expanded="false" aria-controls="genre">
-				Год:
-			</p>
-
-			<div class='row mb-3'>
-				<div class='col-5'>
-			<input type="number" id="date_start" class="form-control" placeholder='От'>
-				</div>
-				<div class='col-5'>
-					<input type="number" id="date_end" class="form-control" placeholder='До'>
-				</div>
-				</div>
+<div class='card'>
+  <div class='card-header text-center'>
+    <h5 data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter">Фильтр</h5>
+  </div>
+  <div class='collapse' id='filter'>
+    <div class=card-body>
 
 
-			<p data-bs-toggle="collapse" href="#genre" role="button" aria-expanded="false" aria-controls="genre">
-				Минимальный рейтинг:
-			</p>
-			<div class='row mb-3'>
-				<div class='col-4'>
-				<input type="number" id="date_start" class="form-control" min='0' max='10'>
-				</div>
-				</div>
+      <p data-bs-toggle="collapse" href="#country" role="button" aria-expanded="false" aria-controls="country">
+        Страна
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+          <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
+        </svg>
+      </p>
 
+      <div class="collapse" id="country">
+        <div class='card'>
+          <div class='card-body' data-bs-spy="scroll" style='height: 200px; overflow-y: auto'>
 
-			<p data-bs-toggle="collapse" href="#rating_mpaa" role="button" aria-expanded="false" aria-controls="rating_mpaa">
-				Рейтинг MPAA
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-  <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-</svg>
-			</p>
+            <input class="form-control mb-2" type="search" placeholder="Поиск" aria-label="Поиск">
 
-			<div class="collapse" id="rating_mpaa">
-				<div class='card'>
-					<div class='card-body' data-bs-spy="scroll">
+              {% for country in countries %}
 
-                        {% for key, rating in ratings_mpaa %}
+            <input class="form-check-input" type="checkbox" value="{{ country.pk }}" id="{{ country }}" name="country">
+            <label class="form-check-label" for="{{ country }}">
+              {{ country }}
+            </label>
+            <br>
 
-                        	<input class="form-check-input" type="checkbox" value="{{ key }}" id="flexCheckChecked">
-					        <label class="form-check-label" for="{{ key }}">
-                                {{ key }}
-					        </label>
-						    <br>
+              {% endfor %}
 
-                        {% endfor %}
+          </div>
+        </div>
+      </div>
 
-					</div>
-				</div>
-			</div>
+      <p data-bs-toggle="collapse" href="#genre" role="button" aria-expanded="false" aria-controls="genre">
+        Жанр
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+          <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
+        </svg>
+      </p>
 
-			<button type="button" class="btn btn-outline-primary mt-3">Применить</button>
+      <div class="collapse" id="genre">
+        <div class='card'>
+          <div class='card-body' style='height: 200px; overflow-y: auto' data-bs-spy="scroll">
 
-				</div>
-			</div>
+            <input class="form-control mb-2" type="search" placeholder="Поиск" aria-label="Поиск">
 
+              {% for genre in genres %}
 
-  	</div>
+            <input class="form-check-input" type="checkbox" value="{{ genre.pk }}" id="flexCheckChecked" name="genre">
+            <label class="form-check-label" for="{{ genre }}">
+              {{ genre }}
+            </label>
+            <br>
 
+              {% endfor %}
+
+          </div>
+        </div>
+      </div>
+
+      <p data-bs-toggle="collapse" href="#genre" role="button" aria-expanded="false" aria-controls="genre">
+        Год:
+      </p>
+
+      <div class='row mb-3'>
+        <div class='col-5'>
+          <input type="number" id="date_start" class="form-control" placeholder='От' name="date_start" min="1800">
+        </div>
+        <div class='col-5'>
+          <input type="number" id="end_date" class="form-control" placeholder='До' name="end_date" min="0">
+        </div>
+      </div>
+
+      <p data-bs-toggle="collapse" href="#genre" role="button" aria-expanded="false" aria-controls="genre">
+        Минимальный рейтинг:
+      </p>
+      <div class='row mb-3'>
+        <div class='col-4'>
+          <input type="number" id="date_start" class="form-control" min='0' max='10' name="world_rating">
+        </div>
+      </div>
+
+      <p data-bs-toggle="collapse" href="#rating_mpaa" role="button" aria-expanded="false" aria-controls="rating_mpaa">
+        Рейтинг MPAA
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+          <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
+        </svg>
+      </p>
+
+      <div class="collapse" id="rating_mpaa">
+        <div class='card'>
+          <div class='card-body' data-bs-spy="scroll">
+
+            {% for key, rating in ratings_mpaa %}
+
+            <input class="form-check-input" type="checkbox" value="{{ key }}" id="flexCheckChecked" name="rating_mpaa">
+            <label class="form-check-label" for="{{ key }}">
+              {{ key }}
+            </label>
+            <br>
+
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-outline-primary mt-3">Применить</button>
+
+    </div>
+  </div>
+
+</div>
+
+</form>
 {% endblock %}

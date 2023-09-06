@@ -14,6 +14,7 @@ def main_view(request):
     return render(request, 'index.html', context=context)
 
 
+# TODO Нужно создать отдельный класс для выведения фильтра
 class AllMovies(ListView):
 
     model = models.Movie
