@@ -35,6 +35,47 @@ class AllMovies(ListView):
             return models.Movie.objects.all()
 
 
+class AllMoviesFilter(AllMovies):
+
+    def get_queryset(self):
+
+        movies = models.Movie.objects.all()
+
+        if self.request.GET.get('date_start') and self.request.GET.get('end_date'):
+            date_start = self.request.GET.get('date_start')
+            end_date = self.request.GET.get('end_date')
+            movies = movies.filter(data_release__range=(date_start, end_date))
+
+        elif self.request.GET.get('date_start'):
+            movies = movies.filter(data_release__gte=self.request.GET.get('date_start'))
+
+        elif self.request.GET.get('end_date'):
+            movies = movies.filter(data_release__lte=self.request.GET.get('end_date'))
+
+        for key in self.request.GET:
+
+            if not self.request.GET.get(key):
+                continue
+
+            if key == 'country':
+                movies = movies.filter(country__in=self.request.GET.getlist(key))
+                continue
+
+            if key == 'genre':
+                movies = movies.filter(genre__in=self.request.GET.getlist(key)).distinct()
+                continue
+
+            if key == 'world_rating':
+                movies = movies.filter(world_rating__gte=self.request.GET.get(key))
+                continue
+
+            if key == 'rating_mpaa':
+                print(self.request.GET.getlist(key))
+                movies = movies.filter(rating_mpaa__in=self.request.GET.getlist(key))
+                continue
+
+        return movies
+
 
 class AllRewards(ListView):
     pass

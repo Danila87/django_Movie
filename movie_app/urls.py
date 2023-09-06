@@ -4,6 +4,7 @@ urlpatterns = [
     path('', views.main_view, name='main'),
 
     path('movie/', views.AllMovies.as_view(), name='all_movies'),
+    path('movie/filter', views.AllMoviesFilter.as_view(), name='all_movie_filter'),
     path('persons/', views.AllPersons.as_view(), name='all_persons'),
     path('rewards/', views.AllRewards.as_view(), name='all_rewards'),
 
