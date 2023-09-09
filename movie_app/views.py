@@ -1,8 +1,10 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic.edit import ModelFormMixin
+
 from . import forms
 from . import models
 # Create your views here.
@@ -91,7 +93,53 @@ class AllPersons(ListView):
 
 
 class AboutMovie(DetailView):
-    pass
+
+    model = models.Movie
+
+    template_name = 'detail_movie.html'
+    slug_url_kwarg = 'slug_movie'
+
+    context_object_name = 'movie'
+
+    #form_class = ReviewForm
+    #date_today = date.today()
+
+    def get_success_url(self):
+        return reverse('main_menu')
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        persons_for_type = {}
+
+        for type_p in models.TypePerson.objects.all():
+
+            type_key = type_p
+
+            if len(self.object.persons.filter(movieperson__type_person=type_p)) > 1:
+                type_key = str(type_p.name)+'ы'
+
+            persons_for_type[type_key] = self.object.persons.filter(movieperson__type_person=type_p)
+
+
+        context['all_persons'] = persons_for_type
+
+        context['type_persons'] = models.TypePerson.objects.all()
+
+        #reviews = self.object.reviews_set.all()
+        #context['movie_reviews'] = reviews
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.film = self.get_object()
+            data.date_review = self.date_today
+            data.user = self.request.user
+            data.save()
+            #return HttpResponseRedirect(request.path)
 
 
 class AboutPerson(DetailView):

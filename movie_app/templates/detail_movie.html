@@ -1,0 +1,55 @@
+{% extends 'detail_base.html' %}
+
+{% block title %}
+
+    movie.name
+
+{% endblock %}
+
+
+{% block main_content %}
+
+    <div class="text-center mb-2"><img src='{{ movie.img.url }}' class="img-fluid shadow" style="height: 500px">
+    <p class="text-end"></p>
+    </div>
+        <h3 class="mt-2">{{ movie.name }}</h3>
+        <p>{{ movie.description }}</p>
+
+{% endblock %}
+
+
+{% block additional_information %}
+
+    <div class='card'>
+        <div class='card-body'>
+            <h5 class='card-title'>Дополнительная информация:</h5>
+            <ul class="list-group list-group-flush">
+                {% for type_person, persons in all_persons.items %}
+
+                    <li class="list-group-item">{{ type_person }}:
+                        {% for person in persons %}
+
+                            {% if forloop.last %}
+
+                                <a href="{{ person.get_url }}">{{ person.name }}</a>
+
+                            {% else %}
+
+                                <a href="{{ person.get_url }}">{{ person.name }},</a>
+
+                            {% endif %}
+
+
+                            {% endfor %}
+                    </li>
+
+                {% endfor %}
+
+                <li class="list-group-item">Бюджет фильма: {{ movie.budget }} $</li>
+                <li class="list-group-item">Год выхода: {{ movie.data_release }}</li>
+                <li class="list-group-item">Рейтинг: {{ movie.world_rating }}</li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

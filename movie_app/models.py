@@ -48,7 +48,7 @@ class Person(models.Model):
     place_born = models.CharField(max_length=100)
 
     img = models.ImageField(upload_to='person_photo/%Y/%m/%d')
-    slug = models.SlugField(default='')
+    slug = models.SlugField(null=True, blank=True)
 
     genre = models.ManyToManyField(Genre)
     type_person = models.ManyToManyField(TypePerson)
