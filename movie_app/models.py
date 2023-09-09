@@ -116,6 +116,7 @@ class Movie(models.Model):
     description = models.TextField(null=True)
 
     img = models.ImageField(upload_to='movie_photos/%Y/%m/%d', null=True, blank=True)
+    trailer = models.FileField(upload_to='movie_video_trailer/%Y/%m/%d', null=True, blank=True)
     video = models.FileField(upload_to='movie_video/%Y/%m/%d', null=True, blank=True)
 
     slug = models.SlugField(null=True, blank=True)

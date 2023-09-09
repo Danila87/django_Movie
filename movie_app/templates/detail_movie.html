@@ -2,7 +2,7 @@
 
 {% block title %}
 
-    movie.name
+{{ movie.name }}
 
 {% endblock %}
 
@@ -14,6 +14,20 @@
     </div>
         <h3 class="mt-2">{{ movie.name }}</h3>
         <p>{{ movie.description }}</p>
+
+    <hr>
+
+      <a data-bs-toggle="collapse" href="#trailer" role="button" aria-expanded="false" aria-controls="trailer">
+        <h5>Трейлер</h5>
+      </a>
+    <div class="collapse" id="trailer">
+        <div class="card card-body">
+            <video class="embed-responsive-item" controls loop>
+  	        <source src="{{ movie.trailer.url }}">
+            Бегущий по лезвию
+            </video>
+        </div>
+    </div>
 
 {% endblock %}
 
