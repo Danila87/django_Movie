@@ -60,7 +60,7 @@ class Person(models.Model):
         return reverse('about_person', args=[self.slug])
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(transliteration(self.name))
         super(Person, self).save(*args, **kwargs)
 
     @property
@@ -123,12 +123,12 @@ class Movie(models.Model):
 
     genre = models.ManyToManyField(Genre)
 
-    persons = models.ManyToManyField(Person)
+    persons = models.ManyToManyField(Person, through='MoviePerson')
 
     budget = models.IntegerField(null=True, blank=True)
     fees = models.IntegerField(null=True, blank=True)
 
-    data_release = models.IntegerField()  # Тут важен именно год, а не точная дата поэтому Integer
+    data_release = models.IntegerField()
 
     world_rating = models.FloatField(null=True, blank=True)
     user_rating = models.FloatField(null=True, blank=True)
@@ -162,3 +162,9 @@ class Review(models.Model):
     date_review = models.DateField()
     user_rating = models.FloatField()
     film = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+
+class MoviePerson(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.PROTECT)
+    person = models.ForeignKey(Person, on_delete=models.PROTECT)
+    type_person = models.ForeignKey(TypePerson, on_delete=models.PROTECT)
