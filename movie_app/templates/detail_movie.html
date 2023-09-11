@@ -76,3 +76,43 @@
     </div>
 
 {% endblock %}
+
+
+{% block additional_block %}
+
+<div class="card w-75" style="width: 18rem;">
+        <div class="card-body">
+
+        {% if not request.user.is_authenticated %}
+
+        	<h4 class="card-title">Оставлять рецензии могут только авторизованные пользователи</h4>
+            <h6>Пожалуйста <a href="#">войдите</a> или <a href="#">зарегистрируйтесь</a>.</h6>
+
+        {% else %}
+
+             <h4 class="card-title">{{ request.user.username }} оставьте свою рецензию</h4>
+            <hr>
+
+            <form method="POST">{% csrf_token %}
+
+            {% for f in form %}
+
+                <div class="mb-3">
+                    <label for="{{ f.id_for_label }}" class="form-label">{{ f.label }}</label>
+                    {{ f }}
+                </div>
+
+            {% endfor %}
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-outline-primary">Подтвердить</button>
+                </div>
+
+            </form>
+
+        {% endif %}
+
+        </div>
+      </div>
+
+{% endblock %}

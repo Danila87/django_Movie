@@ -47,3 +47,21 @@ class AuthenticationUserForm(AuthenticationForm):
         'class': 'form-control',
         'placeholder': '*************'
     }))
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+
+        model = models.Review
+        fields = ['text_review', 'user_rating']
+
+        labels = {
+            'text_review': 'Текст рецензии: ',
+            'user_rating': 'Ваша оценка фильму: '
+        }
+
+        widgets = {
+            'text_review': forms.Textarea(attrs={'class': 'form-control', 'rows': '5'}),
+            'user_rating': forms.NumberInput(attrs={'class': 'form-control col-2', 'min': 0, 'max': 10})
+        }

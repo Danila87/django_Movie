@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import ModelFormMixin
 
+from datetime import date
 from . import forms
 from . import models
 # Create your views here.
@@ -92,7 +93,7 @@ class AllPersons(ListView):
     pass
 
 
-class AboutMovie(DetailView):
+class AboutMovie(ModelFormMixin, DetailView):
 
     model = models.Movie
 
@@ -101,11 +102,8 @@ class AboutMovie(DetailView):
 
     context_object_name = 'movie'
 
-    #form_class = ReviewForm
-    #date_today = date.today()
-
-    def get_success_url(self):
-        return reverse('main_menu')
+    form_class = forms.ReviewForm
+    date_today = date.today()
 
     def get_context_data(self, **kwargs):
 
