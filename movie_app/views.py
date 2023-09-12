@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -119,13 +120,11 @@ class AboutMovie(ModelFormMixin, DetailView):
 
             persons_for_type[type_key] = self.object.persons.filter(movieperson__type_person=type_p)
 
-
         context['all_persons'] = persons_for_type
-
         context['type_persons'] = models.TypePerson.objects.all()
 
-        #reviews = self.object.reviews_set.all()
-        #context['movie_reviews'] = reviews
+        reviews = self.object.reviews
+        context['movie_reviews'] = reviews
 
         return context
 
@@ -137,7 +136,7 @@ class AboutMovie(ModelFormMixin, DetailView):
             data.date_review = self.date_today
             data.user = self.request.user
             data.save()
-            #return HttpResponseRedirect(request.path)
+            return HttpResponseRedirect(request.path)
 
 
 class AboutPerson(DetailView):

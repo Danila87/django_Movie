@@ -17,7 +17,9 @@
 
     <hr class="mb-4">
 
-      <a data-bs-toggle="collapse" href="#trailer" role="button" aria-expanded="false" aria-controls="trailer">
+    {% if movie.trailer %}
+
+          <a data-bs-toggle="collapse" href="#trailer" role="button" aria-expanded="false" aria-controls="trailer">
         <h5>Трейлер</h5>
       </a>
     <div class="collapse" id="trailer">
@@ -29,14 +31,22 @@
         </div>
     </div>
 
+    {% endif %}
+
+    {% if movie.video %}
+
         <div class="card">
             <div class="card-header">Фильм {{ movie.name }} смотреть онлайн</div>
                 <div class="card card-body">
                     <video class="embed-responsive-item" controls loop>
-  	                <source src="{{ movie.trailer.url }}">
+  	                <source src="{{ movie.video.url }}">
                     </video>
                 </div>
         </div>
+
+    {% endif %}
+
+    <hr>
 
 {% endblock %}
 
@@ -71,6 +81,7 @@
                 <li class="list-group-item">Бюджет фильма: {{ movie.budget }} $</li>
                 <li class="list-group-item">Год выхода: {{ movie.data_release }}</li>
                 <li class="list-group-item">Рейтинг: {{ movie.world_rating }}</li>
+                <li class="list-group-item">Пользовательский рейтинг: {{ movie.user_rating }}</li>
             </ul>
         </div>
     </div>
@@ -80,7 +91,7 @@
 
 {% block additional_block %}
 
-<div class="card w-75" style="width: 18rem;">
+    <div class="card w-75" style="width: 18rem;">
         <div class="card-body">
 
         {% if not request.user.is_authenticated %}
@@ -114,5 +125,56 @@
 
         </div>
       </div>
+
+    <a data-bs-toggle="collapse" href="#reviews" role="button" aria-expanded="false" aria-controls="reviews">
+        <h5 class="mt-2">Показать Рецензии</h5>
+      </a>
+    <div class="collapse" id="reviews">
+
+    <div class="card mt-2">
+    <div class="card-body">
+
+    {% if movie_reviews %}
+
+    {% for review in movie_reviews %}
+
+    <div class='card w-75 mt-2 ms-2'>
+          <div class='card-header'>
+              <h5>Пользователь: {{ review.user.username }}</h5>
+            </div>
+        <div class='card-body'>
+          <p>
+            {{ review.text_review }}
+          </p>
+            <p>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                      Оценка: {{ review.user_rating }}
+                  </p>
+          </div>
+          <div class='card-footer d-flex justify-content-end'><small class='text-info'> Комментарий оставлен {{ review.date_review }}</small>
+
+          </div>
+      </div>
+
+    {% endfor %}
+
+        {% else %}
+
+        <h5 class="ms-2"> Пока никто не оставлял свою рецензию на данный фильм. Будьте первыми! </h5>
+        <hr>
+
+    {% endif %}
+
+    </div>
+    </div>
+
+    </div>
+
+
+
+
+
 
 {% endblock %}

@@ -152,7 +152,16 @@ class Movie(models.Model):
         super(Movie, self).save(*args, **kwargs)
 
     @property
-    def all_reviews(self):
+    def current_user_rating(self):
+        return self.user_rating
+
+    @current_user_rating.setter
+    def current_user_rating(self, new_value, *args, **kwargs):
+        self.user_rating = new_value
+        super(Movie, self).save(*args, **kwargs)
+
+    @property
+    def reviews(self):
         return self.review_set.all()
 
 
@@ -164,6 +173,18 @@ class Review(models.Model):
     user_rating = models.FloatField()
     film = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+
+        current_rating = self.film.current_user_rating
+        form_rating = self.user_rating
+
+        if not len(self.film.review_set.all()):
+            self.film.current_user_rating = form_rating
+
+        else:
+            self.film.current_user_rating = current_rating / (len(self.film.review_set.all()) + 1)
+
+        super(Review, self).save(*args, **kwargs)
 
 class MoviePerson(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.PROTECT)
