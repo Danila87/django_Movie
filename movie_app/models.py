@@ -157,7 +157,18 @@ class Movie(models.Model):
 
     @current_user_rating.setter
     def current_user_rating(self, new_value, *args, **kwargs):
-        self.user_rating = new_value
+
+        overall_rating = 0
+
+        for review in self.reviews:
+            overall_rating += review.user_rating
+
+        if len(self.review_set.all()) == 1:
+            self.user_rating = new_value
+
+        else:
+            self.user_rating = overall_rating / (len(self.review_set.all()))
+
         super(Movie, self).save(*args, **kwargs)
 
     @property
@@ -175,16 +186,10 @@ class Review(models.Model):
 
     def save(self, *args, **kwargs):
 
-        current_rating = self.film.current_user_rating
-        form_rating = self.user_rating
-
-        if not len(self.film.review_set.all()):
-            self.film.current_user_rating = form_rating
-
-        else:
-            self.film.current_user_rating = current_rating / (len(self.film.review_set.all()) + 1)
-
         super(Review, self).save(*args, **kwargs)
+
+        self.film.current_user_rating = self.user_rating
+
 
 class MoviePerson(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.PROTECT)

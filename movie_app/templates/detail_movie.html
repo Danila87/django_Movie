@@ -33,13 +33,13 @@
 
     {% endif %}
 
-    {% if movie.video %}
+    {% if movie.trailer %}
 
         <div class="card">
             <div class="card-header">Фильм {{ movie.name }} смотреть онлайн</div>
                 <div class="card card-body">
                     <video class="embed-responsive-item" controls loop>
-  	                <source src="{{ movie.video.url }}">
+  	                <source src="{{ movie.trailer.url }}">
                     </video>
                 </div>
         </div>
