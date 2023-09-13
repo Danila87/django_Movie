@@ -24,17 +24,13 @@
 
                   <div class="row mt-3">
 
-                        <div class="row mt-3">
+                      <a class="text-end" href="{% url 'registration' %}">Нет аккаунта</a>
+                      <a class="text-end mt-2" href="#">Забыл пароль</a>
 
-                            <div class="col d-flex justify-content-start">
-                                <a href="{% url 'main' %}" class="btn btn-outline-danger">На главную</a>
-                            </div>
-
-                            <div class="col d-flex justify-content-end">
+                        <div class="d-grid gap-2 mt-4">
                                 <button type="submit" class="btn btn-outline-primary">Войти</button>
-                            </div>
-
                         </div>
+
                   </div>
                         </form>
 {% endblock %}

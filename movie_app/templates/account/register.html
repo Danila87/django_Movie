@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block account_content %}
+
 	                    <form method="POST">
                         {% csrf_token %}
                         <div class="mb-3">
@@ -80,18 +81,14 @@
                                   {% endif %}
                               </div>
 
+                            <a href="{% url 'login' %}" class="text-end mt-2">Есть аккаунт</a>
+
                         </div>
 
 
-                        <div class="row mt-3">
+                        <div class="d-grid gap-2 mt-4">
 
-                            <div class="col d-flex justify-content-start">
-                                <a href="{% url 'main' %}" class="btn btn-outline-danger">На главную</a>
-                            </div>
-
-                            <div class="col d-flex justify-content-end">
                                 <button type="submit" class="btn btn-outline-primary">Регистрация</button>
-                            </div>
 
                         </div>
 

@@ -34,8 +34,8 @@
                     </li>
                 </ul>
             {% else %}
-                <a href="#"><button type="button" class="btn btn-outline-primary">Регистрация</button></a>
-                <a href="#"><button type="button" class="btn btn-outline-success">Войти</button></a>
+                <a href="{% url 'registration' %}"><button type="button" class="btn btn-outline-primary">Регистрация</button></a>
+                <a href="{% url 'login' %}"><button type="button" class="btn btn-outline-success">Войти</button></a>
             {% endif %}
         </div>
       </div>
