@@ -140,7 +140,12 @@ class AboutMovie(ModelFormMixin, DetailView):
 
 
 class AboutPerson(DetailView):
-    pass
+
+    model = models.Person
+
+    template_name = 'detail_person.html'
+    context_object_name = 'person'
+    slug_url_kwarg = 'slug_person'
 
 
 class LoginUser(LoginView):
@@ -184,4 +189,4 @@ class UserProfileSettings(DetailView):
 
 def user_logout(request):
     logout(request)
-    return redirect('main')
+    return redirect('all_movies')

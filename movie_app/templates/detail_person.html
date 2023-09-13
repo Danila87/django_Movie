@@ -1,0 +1,76 @@
+{% extends 'detail_base.html' %}
+
+{% block title %}
+
+    {{ person.name }}
+
+{% endblock %}
+
+
+{% block main_content %}
+
+    <div class="text-center mb-4"><img src='{{ person.img.url }}' class="img-fluid shadow" style="height: 500px">
+    <p class="text-end"></p>
+    </div>
+        <h3 class="mt-2">{{ person.name }}</h3>
+        <p>{{ person.description }}</p>
+
+    <hr class="mb-4">
+
+{% endblock %}
+
+
+{% block additional_information %}
+
+        <div class='card'>
+        <div class='card-body'>
+            <h5 class='card-title'>Дополнительная информация:</h5>
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">Роли:
+
+                    {% for type_person in person.type_person.all %}
+
+                	{% if forloop.last %}
+
+                        {{ type_person }}
+
+                        {% else %}
+
+                        {{ type_person }},
+
+                    {% endif %}
+
+                    {% endfor %}
+                </li>
+
+                <li class="list-group-item">Жанры:
+                {% for genre in person.genre.all %}
+
+                    {% if forloop.last %}
+
+                    {{ genre }}
+
+                    {% else %}
+
+                	{{ genre }},
+
+                    {% endif %}
+
+                {% endfor %}
+
+                </li>
+
+                <li class="list-group-item">Дата рождения {{ person.date_born }}</li>
+                <li class="list-group-item">Место рождения: {{ person.place_born }}</li>
+                <li class="list-group-item">Возраст: {{ person.age }}</li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block additional_block %}
+
+{% endblock %}
