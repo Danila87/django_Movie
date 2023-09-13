@@ -96,12 +96,12 @@
 
         {% if not request.user.is_authenticated %}
 
-        	<h4 class="card-title">Оставлять рецензии могут только авторизованные пользователи</h4>
+        	<h5 class="card-title">Оставлять рецензии могут только авторизованные пользователи</h5>
             <h6>Пожалуйста <a href="#">войдите</a> или <a href="#">зарегистрируйтесь</a>.</h6>
 
         {% else %}
 
-             <h4 class="card-title">{{ request.user.username }} оставьте свою рецензию</h4>
+             <h5 class="card-title">{{ request.user.username }} оставьте свою рецензию</h5>
             <hr>
 
             <form method="POST">{% csrf_token %}
