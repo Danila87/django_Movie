@@ -82,7 +82,7 @@
 
       {% if not selected_type %}
 
-          <a class="nav-link active" aria-current="page" href="{{ person.get_url }}">Фильмография</a>
+          <p class="nav-link active" aria-current="page" href="{{ person.get_url }}">Фильмография</p>
 
           {% else %}
 
@@ -97,7 +97,7 @@
               {% if type == selected_type %}
 
                   <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="?filter={{ type.pk }}">{{ type.name }}</a>
+                <p class="nav-link active" aria-current="page" href="?filter={{ type.pk }}">{{ type.name }}</p>
                 </li>
 
                   {% else %}
