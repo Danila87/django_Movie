@@ -29,7 +29,7 @@
 
                 <li class="list-group-item">Роли:
 
-                    {% for type_person in person.type_person.all %}
+                    {% for type_person in types_person %}
 
                 	{% if forloop.last %}
 
@@ -45,6 +45,7 @@
                 </li>
 
                 <li class="list-group-item">Жанры:
+
                 {% for genre in person.genre.all %}
 
                     {% if forloop.last %}
@@ -64,6 +65,7 @@
                 <li class="list-group-item">Дата рождения {{ person.date_born }}</li>
                 <li class="list-group-item">Место рождения: {{ person.place_born }}</li>
                 <li class="list-group-item">Возраст: {{ person.age }}</li>
+
             </ul>
         </div>
     </div>
@@ -72,5 +74,74 @@
 
 
 {% block additional_block %}
+
+    <div class='card'>
+      <ul class="nav nav-tabs">
+          <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{{ person.get_url }}">Фильмография</a>
+      </li>
+          {% for type in types_person %}
+
+              {% if type.name == person.selected_type %}
+
+                  <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="?filter={{ type.pk }}">{{ type.name }}</a>
+                </li>
+
+                  {% else %}
+
+                  <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="?filter={{ type.pk }}">{{ type.name }}</a>
+            </li>
+
+              {% endif %}
+
+
+
+          {% endfor %}
+
+        </ul>
+      <div class='card-body'>
+
+          {% for movie, types_person in all_movies.items %}
+
+              <div class='row g-0'>
+          <div class='col'>
+            <h5>{{ movie.name }}</h5>
+          <h5 class="text-info">{{ movie.data_release }}</h5>
+            <p>
+                {% for i in types_person %}
+
+                    {% if forloop.last %}
+                        {{ i }}
+
+                    {% else %}
+
+                        {{ i }},
+
+                    {% endif %}
+
+                  {% endfor %}
+            </p>
+          </div>
+          <div class='col text-center'>
+             <h4 class='text-warning'>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                 {{ movie.world_rating }}
+                  </h4>
+          </div>
+          <div class='col'>
+          <a class='btn btn-primary' href='{{ movie.get_url }}'>Смотреть онлайн</a>
+          </div>
+          <hr>
+        </div>
+
+          {% endfor %}
+
+
+      </div>
+    </div>
 
 {% endblock %}

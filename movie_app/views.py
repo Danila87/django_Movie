@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import ModelFormMixin
+from django.db.models import Q
 
 from datetime import date
 from . import forms
@@ -146,6 +147,32 @@ class AboutPerson(DetailView):
     template_name = 'detail_person.html'
     context_object_name = 'person'
     slug_url_kwarg = 'slug_person'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        all_movies_with_types = {}
+
+        if self.request.GET:
+            movies = self.object.all_films.filter(movieperson__type_person=self.request.GET['filter'])
+            context['selected_type'] = self.request.GET['filter']
+        else:
+            movies = self.object.all_films
+
+        for movie in movies:
+
+            types_person = []
+
+            for type_p in movie.movieperson_set.filter(person_id=self.object):
+                types_person.append(type_p.type_person)
+
+            all_movies_with_types[movie] = types_person
+
+        context['all_movies'] = all_movies_with_types
+        context['types_person'] = self.object.type_person.all()
+
+        return context
 
 
 class LoginUser(LoginView):
