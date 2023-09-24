@@ -77,12 +77,24 @@
 
     <div class='card'>
       <ul class="nav nav-tabs">
-          <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{{ person.get_url }}">Фильмография</a>
-      </li>
+
+      <li class="nav-item">
+
+      {% if not selected_type %}
+
+          <a class="nav-link active" aria-current="page" href="{{ person.get_url }}">Фильмография</a>
+
+          {% else %}
+
+          <a class="nav-link" aria-current="page" href="{{ person.get_url }}">Фильмография</a>
+
+      {% endif %}
+
+        </li>
+
           {% for type in types_person %}
 
-              {% if type.name == person.selected_type %}
+              {% if type == selected_type %}
 
                   <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="?filter={{ type.pk }}">{{ type.name }}</a>

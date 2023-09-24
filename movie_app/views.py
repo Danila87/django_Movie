@@ -156,7 +156,7 @@ class AboutPerson(DetailView):
 
         if self.request.GET:
             movies = self.object.all_films.filter(movieperson__type_person=self.request.GET['filter'])
-            context['selected_type'] = self.request.GET['filter']
+            context['selected_type'] = models.TypePerson.objects.get(id=self.request.GET['filter'])
         else:
             movies = self.object.all_films
 
